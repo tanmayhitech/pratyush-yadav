@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141414" />
+      <stop offset="50%" stop-color="#0a0a0a" />
+      <stop offset="100%" stop-color="#040404" />
+    </linearGradient>
+    <radialGradient id="lightGrad" cx="45%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#2a2a2a" stop-opacity="0.6"/>
+      <stop offset="60%" stop-color="#0e0e0e" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.9"/>
+    </radialGradient>
+    <filter id="noiseFilter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.04 0"/>
+      <feComposite in2="SourceGraphic" in="glitch" operator="in"/>
+    </filter>
+    <linearGradient id="shadowGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="70%" stop-color="#070707" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#070707" stop-opacity="0.95"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="800" height="1000" fill="url(#bgGrad)" />
+  <rect width="800" height="1000" fill="url(#lightGrad)" />
+
+  <!-- Subtle Architectural Shadows / Editorial Portrait Silhouette -->
+  <g opacity="0.85">
+    <!-- Suit Shoulders & Silhouette -->
+    <path d="M120 1000 C 140 760, 220 620, 310 570 C 340 550, 360 540, 400 540 C 440 540, 460 550, 490 570 C 580 620, 660 760, 680 1000 Z" fill="#080808" />
+    
+    <!-- Collar & Shirt Contrast -->
+    <path d="M340 550 L400 680 L460 550 L420 530 L380 530 Z" fill="#121212" stroke="#1f1f1f" stroke-width="1.5" />
+    <path d="M375 540 L400 630 L425 540 Z" fill="#1e1e1e" />
+    
+    <!-- Neck & Jawline -->
+    <path d="M360 460 C 360 510, 375 545, 400 545 C 425 545, 440 510, 440 460 Z" fill="#181818" />
+    
+    <!-- Head / Profile Form -->
+    <ellipse cx="400" cy="380" rx="95" ry="125" fill="#1b1b1b" />
+    
+    <!-- Hair & Chiaroscuro Side Shadow -->
+    <path d="M310 380 C 305 280, 370 230, 400 230 C 460 230, 500 290, 490 380 C 480 340, 440 280, 390 280 C 340 280, 315 330, 310 380 Z" fill="#0d0d0d" />
+    <path d="M400 230 C 480 230, 510 320, 495 420 C 465 470, 440 495, 400 505 C 450 470, 470 410, 460 360 C 450 310, 410 260, 400 230 Z" fill="#0b0b0b" />
+    
+    <!-- Subtle Lighting Ridge on Left Jaw -->
+    <path d="M325 380 C 335 440, 360 485, 395 502 C 375 480, 350 435, 342 385 Z" fill="#2c2c2c" opacity="0.6"/>
+  </g>
+
+  <!-- Editorial Grain Overlay -->
+  <rect width="800" height="1000" fill="#ffffff" filter="url(#noiseFilter)" opacity="0.05" />
+
+  <!-- Bottom Vignette -->
+  <rect width="800" height="1000" fill="url(#shadowGrad)" />
+
+  <!-- Monogram & Editorial Stamp in SVG -->
+  <text x="40" y="70" font-family="'JetBrains Mono', monospace" font-size="12" fill="#555555" letter-spacing="4">ARCHIVE // 2026</text>
+  <text x="760" y="70" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="12" fill="#555555" letter-spacing="3">26.8467° N, 80.9462° E</text>
+  
+  <text x="400" y="930" text-anchor="middle" font-family="'Bodoni Moda', 'Cinzel', serif" font-style="italic" font-size="19" fill="#888888" letter-spacing="2">Pratyush Yadav</text>
+  <text x="400" y="955" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" fill="#444444" letter-spacing="4">LUCKNOW, INDIA</text>
+</svg>

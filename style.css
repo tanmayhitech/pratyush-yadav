@@ -1,0 +1,1226 @@
+/* ==========================================================================
+   PRATYUSH YADAV — PERSONAL DIGITAL MONOGRAPH
+   Aesthetic: Ultra-Minimalist Editorial × The Godfather Atmosphere
+   Theme Modes: Noir (Default) & Crimson Blood Mode
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   01. Design Tokens & Themes
+   -------------------------------------------------------------------------- */
+:root,
+[data-theme="noir"] {
+  --bg-pitch: #060606;
+  --bg-card: #0b0b0b;
+  --bg-card-hover: #121212;
+  
+  --text-pure: #ffffff;
+  --text-lead: #eaeae8;
+  --text-body: #92928e;
+  --text-muted: #565652;
+  --text-dim: #343432;
+  
+  --gold-accent: #c49d48;
+  --crimson-accent: #8b1e1e;
+  --crimson-glow: rgba(139, 30, 30, 0.4);
+  
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-focus: rgba(255, 255, 255, 0.22);
+  
+  --vignette-ambient: rgba(0, 0, 0, 0.88);
+  --grain-level: 0.035;
+}
+
+[data-theme="crimson"] {
+  /* Iconic Godfather Screenprint Red Canvas */
+  --bg-pitch: #981414;
+  --bg-card: #080808;
+  --bg-card-hover: #121212;
+  
+  --text-pure: #ffffff;
+  --text-lead: #fdfaf7;
+  --text-body: #ebdcd7;
+  --text-muted: #f2cece;
+  --text-dim: #caa0a0;
+  
+  --gold-accent: #f5cf70;
+  --crimson-accent: #ffffff;
+  --crimson-glow: rgba(0, 0, 0, 0.6);
+  
+  --border-subtle: rgba(255, 255, 255, 0.15);
+  --border-focus: rgba(255, 255, 255, 0.4);
+  
+  --vignette-ambient: rgba(60, 4, 4, 0.7);
+  --grain-level: 0.06;
+}
+
+:root {
+  --font-display: 'Cinzel', 'Bodoni Moda', Georgia, serif;
+  --font-editorial: 'Bodoni Moda', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+
+  --site-width: 1180px;
+  --pad-gutter: clamp(1.25rem, 5vw, 3.5rem);
+  
+  --ease-film: cubic-bezier(0.16, 1, 0.3, 1);
+  --speed-fast: 0.2s var(--ease-film);
+  --speed-mid: 0.35s var(--ease-film);
+  --speed-slow: 0.6s var(--ease-film);
+}
+
+/* --------------------------------------------------------------------------
+   02. Reset & Baseline
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  background-color: var(--bg-pitch);
+  color: var(--text-lead);
+  -webkit-font-smoothing: antialiased;
+}
+
+body.cinematic-body {
+  background-color: var(--bg-pitch);
+  color: var(--text-lead);
+  font-family: var(--font-sans);
+  line-height: 1.65;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+  transition: background var(--speed-mid), color var(--speed-mid);
+}
+
+[data-theme="crimson"] body.cinematic-body {
+  background: radial-gradient(circle at 65% 25%, #af1717 0%, #941212 45%, #6a0b0b 100%);
+}
+
+/* Subtle Film Grain Layer */
+.film-grain-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  opacity: var(--grain-level);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Atmospheric Vignette */
+.cinematic-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(circle at center, transparent 45%, var(--vignette-ambient) 100%);
+  transition: background var(--speed-mid);
+}
+
+::selection {
+  background-color: var(--crimson-accent);
+  color: #ffffff;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-pitch);
+}
+::-webkit-scrollbar-thumb {
+  background: #1c1c1c;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--crimson-accent);
+}
+
+.container {
+  width: 100%;
+  max-width: var(--site-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--pad-gutter);
+  padding-right: var(--pad-gutter);
+  position: relative;
+  z-index: 2;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--speed-fast);
+}
+
+button {
+  font-family: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------
+   03. Floating Top Bar
+   -------------------------------------------------------------------------- */
+.floating-top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem var(--pad-gutter);
+  pointer-events: none;
+}
+
+.archive-stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  background: rgba(6, 6, 6, 0.7);
+  backdrop-filter: blur(10px);
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--border-subtle);
+  pointer-events: auto;
+}
+
+[data-theme="crimson"] .archive-stamp {
+  background: #000000;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.stamp-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--crimson-accent);
+  box-shadow: 0 0 8px var(--crimson-glow);
+}
+
+.stamp-text {
+  color: var(--text-lead);
+  font-weight: 500;
+}
+
+.stamp-sep {
+  color: var(--text-dim);
+}
+
+.stamp-loc {
+  color: var(--text-muted);
+}
+
+.theme-switcher-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(6, 6, 6, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-subtle);
+  padding: 0.25rem 0.5rem;
+  pointer-events: auto;
+}
+
+[data-theme="crimson"] .theme-switcher-wrapper {
+  background: #000000;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.theme-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
+  padding: 0.3rem 0.45rem;
+  transition: all var(--speed-fast);
+}
+
+.theme-btn .btn-indicator {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--text-dim);
+  transition: all var(--speed-fast);
+}
+
+.theme-btn .crimson-ind {
+  background-color: #551216;
+}
+
+.theme-btn.active {
+  color: var(--text-lead);
+  font-weight: 500;
+}
+
+.theme-btn.active .btn-indicator {
+  background-color: var(--text-lead);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+}
+
+.theme-btn.active .crimson-ind {
+  background-color: #dc2626;
+  box-shadow: 0 0 8px #dc2626;
+}
+
+.theme-divider {
+  color: var(--text-dim);
+  font-size: 0.65rem;
+}
+
+/* --------------------------------------------------------------------------
+   04. Hero Monolith (Pure Focus on Pratyush Yadav)
+   -------------------------------------------------------------------------- */
+.hero-monolith {
+  padding-top: clamp(6.5rem, 14vw, 10rem);
+  padding-bottom: clamp(4rem, 8vw, 7rem);
+  min-height: 92vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-title-area {
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: clamp(1.5rem, 3.5vw, 2.5rem);
+}
+
+.hero-sub-label {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  margin-bottom: 0.85rem;
+}
+
+.mono-idx {
+  color: var(--gold-accent);
+}
+
+.mono-sep {
+  color: var(--text-dim);
+}
+
+.hero-monolith-name {
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 9.8vw, 7.8rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: 0.03em;
+  color: var(--text-pure);
+  text-transform: uppercase;
+}
+
+/* Master Grid: Portrait + Statement */
+.hero-master-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: clamp(2.5rem, 6vw, 5.5rem);
+  align-items: center;
+}
+
+/* The Portrait of Pratyush */
+.portrait-column {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.portrait-frame {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 8px;
+  cursor: pointer;
+  outline: none;
+  transition: all var(--speed-mid);
+}
+
+.portrait-frame:hover,
+.portrait-frame:focus-visible {
+  border-color: var(--border-focus);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7);
+}
+
+/* Red Mode: Godfather Tuxedo Card with Iconic Diagonal Shadow */
+[data-theme="crimson"] .portrait-frame {
+  background-color: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 20px 20px 0px rgba(0, 0, 0, 0.95);
+}
+
+[data-theme="crimson"] .portrait-frame:hover {
+  box-shadow: 24px 24px 0px rgba(0, 0, 0, 0.98);
+  transform: translateY(-3px);
+}
+
+.portrait-media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background-color: #000000;
+}
+
+.portrait-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  filter: grayscale(100%) contrast(115%) brightness(92%);
+  transition: transform var(--speed-slow), filter var(--speed-mid);
+}
+
+.portrait-frame:hover .portrait-photo {
+  transform: scale(1.025);
+  filter: grayscale(75%) contrast(120%) brightness(100%);
+}
+
+[data-theme="crimson"] .portrait-photo {
+  filter: grayscale(100%) contrast(120%) brightness(95%);
+}
+
+[data-theme="crimson"] .portrait-frame:hover .portrait-photo {
+  filter: grayscale(40%) contrast(125%) brightness(102%);
+}
+
+/* Godfather Rose Boutonnière Lapel Badge */
+.godfather-rose-badge {
+  display: none;
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+  animation: pulseRose 3s ease-in-out infinite alternate;
+}
+
+[data-theme="crimson"] .godfather-rose-badge {
+  display: flex;
+}
+
+@keyframes pulseRose {
+  0% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(225, 29, 72, 0.4)); }
+  100% { transform: scale(1.05); filter: drop-shadow(0 0 8px rgba(225, 29, 72, 0.8)); }
+}
+
+.portrait-vignette-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent 65%, rgba(6, 6, 6, 0.85) 100%);
+}
+
+.portrait-caption-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0.25rem 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
+}
+
+.pt-caption-name {
+  color: var(--text-lead);
+  font-weight: 500;
+}
+
+.pt-caption-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* Statement Column */
+.statement-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.editorial-block {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.statement-marker {
+  position: absolute;
+  left: 0;
+  top: 0.35rem;
+  bottom: 0.35rem;
+  width: 2.5px;
+  background-color: var(--crimson-accent);
+  box-shadow: 0 0 10px var(--crimson-glow);
+}
+
+.lead-statement {
+  font-family: var(--font-editorial);
+  font-size: clamp(1.3rem, 2.6vw, 1.85rem);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--text-lead);
+}
+
+.sub-statement-block {
+  margin-bottom: 2.5rem;
+}
+
+.sub-statement {
+  font-size: 0.98rem;
+  color: var(--text-body);
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+
+/* Actions */
+.hero-action-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-bottom: 2.75rem;
+}
+
+.action-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 0.95rem 1.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-lead);
+  transition: all var(--speed-fast);
+}
+
+.action-btn-primary:hover {
+  background-color: var(--crimson-accent);
+  border-color: var(--crimson-accent);
+  color: #ffffff;
+  box-shadow: 0 0 16px var(--crimson-glow);
+}
+
+.btn-glow-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--crimson-accent);
+}
+
+.action-btn-primary:hover .btn-glow-dot {
+  background-color: #ffffff;
+}
+
+.action-link-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  padding: 0.5rem 0;
+  transition: color var(--speed-fast);
+}
+
+.action-link-social:hover {
+  color: var(--text-lead);
+}
+
+.action-link-social svg {
+  transition: transform var(--speed-fast);
+}
+
+.action-link-social:hover svg {
+  transform: translate(2px, -2px);
+}
+
+.action-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  padding: 0.95rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: all var(--speed-fast);
+}
+
+.action-btn-ghost:hover {
+  border-color: var(--border-focus);
+  color: var(--text-lead);
+}
+
+/* Identity Specs */
+.identity-specs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--border-subtle);
+  font-family: var(--font-mono);
+}
+
+.spec-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.spec-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+}
+
+.spec-val {
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  color: var(--text-lead);
+}
+
+/* --------------------------------------------------------------------------
+   05. Cinematic Intermissions (Godfather Quotes)
+   -------------------------------------------------------------------------- */
+.cinematic-intermission {
+  padding: clamp(3rem, 6vw, 4.5rem) 0;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  background-color: var(--bg-card);
+  position: relative;
+  z-index: 2;
+}
+
+.intermission-dark {
+  background-color: var(--bg-pitch);
+}
+
+.intermission-inner {
+  text-align: center;
+}
+
+.intermission-quote {
+  font-family: var(--font-editorial);
+  font-size: clamp(1.4rem, 3.2vw, 2.2rem);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text-lead);
+  letter-spacing: 0.02em;
+}
+
+/* --------------------------------------------------------------------------
+   06. Minimal Perspectives Section
+   -------------------------------------------------------------------------- */
+.minimal-perspectives-section {
+  padding: clamp(5rem, 10vw, 8.5rem) 0;
+  position: relative;
+  z-index: 2;
+}
+
+.section-title-line {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: clamp(3rem, 6vw, 4.5rem);
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.section-num {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--crimson-accent);
+  letter-spacing: 0.14em;
+}
+
+.section-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 600;
+  color: var(--text-pure);
+}
+
+.perspectives-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(2rem, 4vw, 3.5rem);
+}
+
+.perspective-entry {
+  display: flex;
+  flex-direction: column;
+}
+
+.entry-index {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--gold-accent);
+  margin-bottom: 1rem;
+}
+
+.entry-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+  font-weight: 500;
+  color: var(--text-pure);
+  margin-bottom: 1rem;
+}
+
+.entry-prose {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--text-body);
+}
+
+/* --------------------------------------------------------------------------
+   07. Minimal Connect Section
+   -------------------------------------------------------------------------- */
+.minimal-connect-section {
+  padding: clamp(4rem, 8vw, 6.5rem) 0 clamp(3rem, 6vw, 5rem);
+  border-top: 1px solid var(--border-subtle);
+  position: relative;
+  z-index: 2;
+}
+
+.connect-minimal-box {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: clamp(2.5rem, 6vw, 4rem);
+  transition: all var(--speed-mid);
+}
+
+[data-theme="crimson"] .connect-minimal-box {
+  background-color: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 20px 20px 0px rgba(0, 0, 0, 0.95);
+}
+
+[data-theme="crimson"] .cinematic-intermission {
+  background-color: #000000;
+  border-color: rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="crimson"] .action-btn-primary {
+  background-color: #000000;
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.8);
+}
+
+[data-theme="crimson"] .action-btn-primary:hover {
+  background-color: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.9);
+}
+
+[data-theme="crimson"] .action-btn-primary:hover .btn-glow-dot {
+  background-color: #981414;
+}
+
+[data-theme="crimson"] .action-btn-ghost {
+  background-color: #000000;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="crimson"] .action-btn-ghost:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  border-color: #ffffff;
+}
+
+.connect-header-area {
+  max-width: 540px;
+  margin-bottom: 2.5rem;
+}
+
+.connect-sub-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  color: var(--crimson-accent);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.connect-main-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 6vw, 4.2rem);
+  font-weight: 600;
+  color: var(--text-pure);
+  line-height: 1;
+  margin-bottom: 0.85rem;
+}
+
+.connect-lead-text {
+  font-size: 0.95rem;
+  color: var(--text-body);
+}
+
+.connect-buttons-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-bottom: 3.5rem;
+}
+
+.minimal-footer-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--border-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
+}
+
+.dot-sep {
+  color: var(--text-dim);
+}
+
+/* --------------------------------------------------------------------------
+   08. Contact Modal
+   -------------------------------------------------------------------------- */
+.cinematic-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--speed-mid);
+}
+
+.cinematic-modal-overlay.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-blur-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(3, 3, 3, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.modal-box {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-focus);
+  padding: clamp(2rem, 5vw, 2.5rem);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.85);
+  transform: translateY(16px);
+  transition: transform var(--speed-mid);
+}
+
+.cinematic-modal-overlay.is-active .modal-box {
+  transform: translateY(0);
+}
+
+.modal-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.modal-tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.modal-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--crimson-accent);
+  box-shadow: 0 0 8px var(--crimson-glow);
+}
+
+.modal-status-text {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+}
+
+.modal-dismiss-btn {
+  color: var(--text-muted);
+  padding: 0.25rem;
+  transition: color var(--speed-fast), transform var(--speed-fast);
+}
+
+.modal-dismiss-btn:hover {
+  color: var(--text-pure);
+  transform: scale(1.1);
+}
+
+.modal-lead-text {
+  margin-bottom: 1.5rem;
+}
+
+.form-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--text-pure);
+  margin-bottom: 0.25rem;
+}
+
+.form-sub {
+  font-size: 0.86rem;
+  color: var(--text-body);
+}
+
+.cinematic-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+.input-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
+}
+
+.cinematic-input {
+  background-color: #050505;
+  border: 1px solid var(--border-subtle);
+  padding: 0.85rem 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  color: var(--text-lead);
+  outline: none;
+  transition: border-color var(--speed-fast);
+}
+
+.cinematic-input:focus {
+  border-color: var(--crimson-accent);
+}
+
+.input-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.validation-msg {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: #ff5e5e;
+  display: none;
+}
+
+.validation-msg.is-visible {
+  display: block;
+}
+
+.dispatch-submit-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background-color: #121212;
+  border: 1px solid var(--border-subtle);
+  padding: 0.95rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-lead);
+  transition: all var(--speed-fast);
+  margin-top: 0.5rem;
+}
+
+.dispatch-submit-btn:hover {
+  background-color: var(--crimson-accent);
+  border-color: var(--crimson-accent);
+  color: #ffffff;
+  box-shadow: 0 0 16px var(--crimson-glow);
+}
+
+/* Receipt */
+.modal-receipt-state {
+  text-align: center;
+  padding: 1.5rem 0.5rem;
+}
+
+.receipt-dot-pulse {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--crimson-accent);
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 0 12px var(--crimson-glow);
+}
+
+.receipt-title {
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: 500;
+  color: var(--text-pure);
+  margin-bottom: 0.75rem;
+}
+
+.receipt-description {
+  font-size: 0.95rem;
+  color: var(--text-body);
+  line-height: 1.6;
+  max-width: 380px;
+  margin: 0 auto 2rem;
+}
+
+.receipt-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* --------------------------------------------------------------------------
+   09. Fullscreen Lightbox
+   -------------------------------------------------------------------------- */
+.cinematic-lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--speed-mid);
+}
+
+.cinematic-lightbox-overlay.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lightbox-dark-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.96);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.lightbox-stage {
+  position: relative;
+  max-width: 780px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lightbox-exit-btn {
+  position: absolute;
+  top: -2.75rem;
+  right: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  transition: color var(--speed-fast);
+}
+
+.lightbox-exit-btn:hover {
+  color: var(--text-lead);
+}
+
+.lightbox-frame {
+  max-height: 75vh;
+  background-color: #000000;
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.95);
+}
+
+.lightbox-full-img {
+  max-height: 75vh;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(100%) contrast(115%);
+  transition: filter var(--speed-mid);
+}
+
+[data-theme="crimson"] .lightbox-full-img {
+  filter: grayscale(85%) contrast(120%) sepia(20%) hue-rotate(320deg);
+}
+
+.lightbox-metadata-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
+}
+
+.lb-title {
+  color: var(--text-lead);
+  font-weight: 500;
+}
+
+.lb-dot {
+  color: var(--crimson-accent);
+}
+
+/* --------------------------------------------------------------------------
+   10. Scroll Reveals
+   -------------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--speed-slow), transform var(--speed-slow);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   11. Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .hero-master-grid {
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+  }
+
+  .perspectives-row {
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .floating-top-bar {
+    padding: 1rem var(--pad-gutter);
+  }
+
+  .archive-stamp {
+    font-size: 0.65rem;
+  }
+
+  .hero-monolith {
+    padding-top: 5.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .hero-monolith-name {
+    font-size: 2.8rem;
+  }
+
+  .identity-specs {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .connect-buttons-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .action-btn-primary,
+  .action-btn-ghost {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .connect-minimal-box {
+    padding: 2rem 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-monolith-name {
+    font-size: 2.35rem;
+  }
+
+  .lead-statement {
+    font-size: 1.15rem;
+  }
+
+  .modal-box {
+    padding: 1.5rem 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
