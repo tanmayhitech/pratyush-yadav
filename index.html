@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="noir">
+<html lang="en" data-theme="crimson">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,12 +14,27 @@
   <!-- Favicon & Touch Icons -->
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
   <link rel="apple-touch-icon" href="assets/favicon.svg" />
-  <meta name="theme-color" content="#060606" />
+  <meta name="theme-color" content="#981414" />
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="cinematic-body" id="siteBody">
+
+  <!-- ====================================================================
+       BOLD & CRISP "GODFATHER" 1-SEC ENTRY ANIMATION
+       ==================================================================== -->
+  <div class="cinematic-prologue-curtain" id="prologueScreen" aria-hidden="true">
+    <div class="prologue-grain-layer"></div>
+    <div class="prologue-vignette"></div>
+    
+    <div class="prologue-content-stage">
+      <h2 class="prologue-godfather-title">GODFATHER</h2>
+    </div>
+  </div>
+
+  <!-- Cinema Reading Progress Bar -->
+  <div class="cinema-scroll-progress" id="scrollProgressBar" aria-hidden="true"></div>
 
   <!-- Subtle Film Grain Overlay -->
   <div class="film-grain-layer" aria-hidden="true"></div>
@@ -27,7 +42,10 @@
   <!-- Atmospheric Chiaroscuro Vignette -->
   <div class="cinematic-vignette" aria-hidden="true"></div>
 
-  <!-- Top Floating Controls: Archive Mark & Theme Switcher (NOIR / CRIMSON) -->
+  <!-- Ambient Cursor Spotlight Beam (Desktop) -->
+  <div class="cursor-spotlight-beam" id="cursorSpotlight" aria-hidden="true"></div>
+
+  <!-- Top Floating Controls: Archive Mark & Theme Switcher (NOIR / CRIMSON / PURPLE) -->
   <header class="floating-top-bar">
     <div class="archive-stamp">
       <span class="stamp-dot"></span>
@@ -37,14 +55,19 @@
     </div>
 
     <div class="theme-switcher-wrapper">
-      <button class="theme-btn active" id="btnNoir" aria-label="Switch to Noir Mode">
+      <button class="theme-btn" id="btnNoir" aria-label="Switch to Noir Mode">
         <span class="btn-indicator"></span>
         <span class="btn-label">NOIR</span>
       </button>
       <span class="theme-divider">/</span>
-      <button class="theme-btn" id="btnCrimson" aria-label="Switch to Crimson Blood Mode">
+      <button class="theme-btn active" id="btnCrimson" aria-label="Switch to Crimson Red Mode">
         <span class="btn-indicator crimson-ind"></span>
         <span class="btn-label">CRIMSON</span>
+      </button>
+      <span class="theme-divider">/</span>
+      <button class="theme-btn" id="btnPurple" aria-label="Switch to Dark Purple Mode">
+        <span class="btn-indicator purple-ind"></span>
+        <span class="btn-label">PURPLE</span>
       </button>
     </div>
   </header>
@@ -52,7 +75,7 @@
   <main id="main-content">
     
     <!-- ====================================================================
-         01. MONUMENTAL HERO: PURE FOCUS ON PRATYUSH YADAV
+         01. MONUMENTAL HERO: PORTRAIT AS THE MAIN ATTRACTION
          ==================================================================== -->
     <section class="hero-monolith">
       <div class="container hero-container">
@@ -70,20 +93,21 @@
           </h1>
         </div>
 
-        <!-- Masterpiece Editorial Composition -->
+        <!-- Masterpiece Editorial Composition (Portrait as Focal Centerpiece) -->
         <div class="hero-master-grid">
           
-          <!-- Left / Center: The Portrait of Pratyush -->
+          <!-- Left / Center: The Portrait of Pratyush (Main Attraction) -->
           <div class="portrait-column reveal">
-            <div class="portrait-frame" id="portraitArtwork" role="button" tabindex="0" aria-label="Expand portrait in fullscreen view">
+            <div class="portrait-frame main-centerpiece" id="portraitArtwork" role="button" tabindex="0" aria-label="Expand portrait in fullscreen view">
               <div class="portrait-media">
                 <img 
-                  src="assets/bauwabhaiy.jpeg" 
+                  src="assets/pratyush-suit-study.jpeg" 
                   alt="Pratyush Yadav" 
                   class="portrait-photo" 
                   id="mainPortraitImg"
                 />
                 <div class="portrait-vignette-overlay"></div>
+                
                 <!-- Godfather Tuxedo Boutonnière Rose Accent (Active in Red Mode) -->
                 <div class="godfather-rose-badge" aria-hidden="true">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -91,9 +115,23 @@
                     <path d="M12 13V21M12 17L9 15M12 18L15 16.5" stroke="#166534" stroke-width="1.4" stroke-linecap="round"/>
                   </svg>
                 </div>
+
+                <!-- Purple Amethyst Lapel Badge (Active in Purple Mode) -->
+                <div class="purple-amethyst-badge" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="12 2 22 8.5 18 21 6 21 2 8.5" fill="#A855F7" stroke="#C084FC" stroke-width="1.3"/>
+                    <polygon points="12 2 17 9 12 21 7 9" fill="#7E22CE" opacity="0.8"/>
+                  </svg>
+                </div>
               </div>
+
+              <!-- Portrait Caption & Switcher Row -->
               <div class="portrait-caption-row">
-                <span class="pt-caption-name">PRATYUSH YADAV</span>
+                <div class="portrait-switcher-nav" role="tablist" aria-label="Portrait variations">
+                  <button class="pt-switch-btn" data-src="assets/bauwabhaiy.jpeg" data-title="PRATYUSH YADAV" data-act="ACT I — CLOSE-UP" aria-label="Portrait 1">01</button>
+                  <button class="pt-switch-btn active" data-src="assets/pratyush-suit-study.jpeg" data-title="THE STUDY // LUCKNOW" data-act="ACT II — THE STUDY" aria-label="Portrait 2">02</button>
+                  <button class="pt-switch-btn" data-src="assets/pratyush-suit-seated.jpeg" data-title="COMPOSURE" data-act="ACT III — COMPOSURE" aria-label="Portrait 3">03</button>
+                </div>
                 <span class="pt-caption-action">
                   <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1.5 4.5V1.5H4.5M10.5 4.5V1.5H7.5M1.5 7.5V10.5H4.5M10.5 7.5V10.5H7.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -121,18 +159,23 @@
               </p>
             </div>
 
-            <!-- Discrete Direct Actions -->
+            <!-- Discrete Direct Actions with Highlighted Instagram -->
             <div class="hero-action-bar">
               <button class="action-btn-primary" id="heroDispatchBtn">
                 <span class="btn-glow-dot"></span>
                 <span>Initiate Contact</span>
               </button>
 
-              <a href="https://instagram.com/pratyushyadav7" target="_blank" rel="noopener noreferrer" class="action-link-social">
-                <span>@pratyushyadav7</span>
-                <svg width="11" height="11" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+              <a href="https://instagram.com/pratyushyadav7" target="_blank" rel="noopener noreferrer" class="action-link-social insta-highlight-btn" aria-label="Pratyush Yadav Instagram">
+                <span class="insta-icon-wrapper">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                </span>
+                <span class="insta-handle">@pratyushyadav7</span>
+                <span class="insta-verified-sparkle">✦</span>
               </a>
             </div>
 
@@ -156,16 +199,20 @@
     </section>
 
     <!-- ====================================================================
-         02. GODFATHER TRANSITION (MINIMALIST PULL QUOTE)
+         02. GODFATHER TRANSITION I (CINEMATIC STUDY BACKGROUND PANEL)
          ==================================================================== -->
-    <div class="cinematic-intermission reveal">
+    <div class="cinematic-intermission intermission-visual reveal" id="intermissionStudy">
+      <div class="intermission-bg-layer" style="background-image: url('assets/pratyush-suit-study.jpeg');" role="img" aria-label="Pratyush Yadav in Study"></div>
+      <div class="intermission-vignette-overlay"></div>
       <div class="container intermission-inner">
+        <span class="intermission-tag">ACT II // OBSERVATION</span>
         <p class="intermission-quote">“Keep your friends close.”</p>
+        <span class="intermission-sub">Time & Composure • 26.8467° N</span>
       </div>
     </div>
 
     <!-- ====================================================================
-         03. PERSPECTIVES: 3 MINIMALIST PILLARS
+         03. PERSPECTIVES: 3 MINIMALIST PILLARS & SEATED MONOGRAPH
          ==================================================================== -->
     <section class="minimal-perspectives-section" id="perspectives">
       <div class="container">
@@ -175,34 +222,52 @@
           <h2 class="section-name">Perspectives</h2>
         </div>
 
-        <div class="perspectives-row">
+        <div class="perspectives-layout-grid">
           
-          <!-- Perspective 01 -->
-          <article class="perspective-entry reveal">
-            <span class="entry-index">I</span>
-            <h3 class="entry-title">Personal Stance</h3>
-            <p class="entry-prose">
-              Individuality is built in solitary discipline. The code is internal. When you carve your own path with ruthless patience, the surrounding noise loses all leverage.
-            </p>
-          </article>
+          <!-- Text Entries -->
+          <div class="perspectives-row">
+            <!-- Perspective 01 -->
+            <article class="perspective-entry reveal">
+              <span class="entry-index">I</span>
+              <h3 class="entry-title">Personal Stance</h3>
+              <p class="entry-prose">
+                Individuality is built in solitary discipline. The code is internal. When you carve your own path with ruthless patience, the surrounding noise loses all leverage.
+              </p>
+            </article>
 
-          <!-- Perspective 02 -->
-          <article class="perspective-entry reveal">
-            <span class="entry-index">II</span>
-            <h3 class="entry-title">Lucknow</h3>
-            <p class="entry-prose">
-              Lucknow carries a rare gravity—where poise, courtesy, and unspoken dignity outweigh haste. Rooted here, one learns how to command presence through quiet composure.
-            </p>
-          </article>
+            <!-- Perspective 02 -->
+            <article class="perspective-entry reveal">
+              <span class="entry-index">II</span>
+              <h3 class="entry-title">Lucknow</h3>
+              <p class="entry-prose">
+                Lucknow carries a rare gravity—where poise, courtesy, and unspoken dignity outweigh haste. Rooted here, one learns how to command presence through quiet composure.
+              </p>
+            </article>
 
-          <!-- Perspective 03 -->
-          <article class="perspective-entry reveal">
-            <span class="entry-index">III</span>
-            <h3 class="entry-title">Observation</h3>
-            <p class="entry-prose">
-              The decisive advantage belongs to the one who observes without rush. Silence is where calculation happens—read every angle before making a single move.
-            </p>
-          </article>
+            <!-- Perspective 03 -->
+            <article class="perspective-entry reveal">
+              <span class="entry-index">III</span>
+              <h3 class="entry-title">Observation</h3>
+              <p class="entry-prose">
+                The decisive advantage belongs to the one who observes without rush. Silence is where calculation happens—read every angle before making a single move.
+              </p>
+            </article>
+          </div>
+
+          <!-- Editorial Suit Portrait Feature Card -->
+          <div class="perspectives-feature-card reveal" id="seatedPortraitCard" role="button" tabindex="0" aria-label="View Composure Portrait in Fullscreen">
+            <div class="feature-card-media">
+              <img src="assets/pratyush-suit-seated.jpeg" alt="Pratyush Yadav Composure" class="feature-card-img" />
+              <div class="feature-card-overlay"></div>
+            </div>
+            <div class="feature-card-caption">
+              <div class="fc-meta">
+                <span class="fc-idx">ACT III</span>
+                <span class="fc-title">COMPOSURE</span>
+              </div>
+              <span class="fc-action">EXPAND</span>
+            </div>
+          </div>
 
         </div>
 
@@ -238,7 +303,14 @@
               <span class="btn-glow-dot"></span>
               <span>Send Message</span>
             </button>
-            <a href="https://instagram.com/pratyushyadav7" target="_blank" rel="noopener noreferrer" class="action-btn-ghost">
+            <a href="https://instagram.com/pratyushyadav7" target="_blank" rel="noopener noreferrer" class="action-btn-ghost insta-connect-btn">
+              <span class="insta-icon-wrapper">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+              </span>
               <span>Instagram // @pratyushyadav7</span>
               <svg width="11" height="11" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -358,9 +430,9 @@
       </div>
 
       <div class="lightbox-metadata-bar">
-        <span class="lb-title">PRATYUSH YADAV</span>
+        <span class="lb-title" id="lbTitle">PRATYUSH YADAV</span>
         <span class="lb-dot">•</span>
-        <span class="lb-loc">LUCKNOW, INDIA</span>
+        <span class="lb-loc" id="lbAct">LUCKNOW, INDIA</span>
       </div>
     </div>
   </div>

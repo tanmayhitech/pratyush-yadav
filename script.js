@@ -1,41 +1,237 @@
 /**
  * PRATYUSH YADAV — THE CINEMATIC MONOGRAPH
- * Script: Theme Switcher (Noir / Crimson), Modal Dispatch, Lightbox, & Revelations
+ * Script: Theme Switcher (Crimson Default / Noir / Purple) with Auto-Mapped Portraits,
+ * 3D Parallax Tilt, Ambient Cursor Spotlight, Magnetic Hover, Modal Dispatch, Lightbox & Revelations
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   // --------------------------------------------------------------------------
-  // 1. Theme Switcher: Noir Mode & Crimson Blood Mode
+  // 0. Bold & Crisp "GODFATHER" 1-Sec Entry Animation
+  // --------------------------------------------------------------------------
+  const prologueScreen = document.getElementById('prologueScreen');
+
+  function dismissPrologue() {
+    if (prologueScreen && !prologueScreen.classList.contains('is-dismissed')) {
+      prologueScreen.classList.add('is-dismissed');
+      setTimeout(() => {
+        prologueScreen.style.display = 'none';
+      }, 500);
+    }
+  }
+
+  prologueScreen?.addEventListener('click', dismissPrologue);
+
+  // Auto-dismiss after 1 second
+  const prologueTimer = setTimeout(dismissPrologue, 1000);
+
+  document.addEventListener('keydown', (e) => {
+    clearTimeout(prologueTimer);
+    dismissPrologue();
+  }, { once: true });
+
+  // --------------------------------------------------------------------------
+  // 1. Photos Data & Theme Mapping
+  // --------------------------------------------------------------------------
+  const PHOTOS = [
+    { src: 'assets/bauwabhaiy.jpeg', title: 'PRATYUSH YADAV', act: 'ACT I — CLOSE-UP' },
+    { src: 'assets/pratyush-suit-study.jpeg', title: 'THE STUDY // LUCKNOW', act: 'ACT II — THE STUDY' },
+    { src: 'assets/pratyush-suit-seated.jpeg', title: 'COMPOSURE', act: 'ACT III — COMPOSURE' }
+  ];
+
+  const mainPortraitImg = document.getElementById('mainPortraitImg');
+  const switchBtns = document.querySelectorAll('.pt-switch-btn');
+
+  let currentPhoto = { ...PHOTOS[1] }; // Default: Image 2 (Crimson Study)
+
+  function selectPhoto(index) {
+    if (index < 0 || index >= PHOTOS.length) return;
+    const target = PHOTOS[index];
+
+    switchBtns.forEach((btn, idx) => {
+      if (idx === index) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    if (mainPortraitImg && mainPortraitImg.getAttribute('src') !== target.src) {
+      mainPortraitImg.style.opacity = '0';
+      setTimeout(() => {
+        mainPortraitImg.src = target.src;
+        mainPortraitImg.style.opacity = '1';
+        currentPhoto = { ...target };
+      }, 150);
+    } else {
+      currentPhoto = { ...target };
+    }
+  }
+
+  // Switch between 3 portraits in hero via buttons
+  switchBtns.forEach((btn, idx) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      selectPhoto(idx);
+    });
+  });
+
+  // --------------------------------------------------------------------------
+  // 2. Theme Switcher (Noir -> Image 1, Crimson -> Image 2, Purple -> Image 3)
   // --------------------------------------------------------------------------
   const htmlRoot = document.documentElement;
   const btnNoir = document.getElementById('btnNoir');
   const btnCrimson = document.getElementById('btnCrimson');
+  const btnPurple = document.getElementById('btnPurple');
 
   const THEME_STORAGE_KEY = 'pratyush_yadav_theme';
 
   function setTheme(theme) {
-    if (theme === 'crimson') {
-      htmlRoot.setAttribute('data-theme', 'crimson');
-      btnCrimson?.classList.add('active');
-      btnNoir?.classList.remove('active');
-      localStorage.setItem(THEME_STORAGE_KEY, 'crimson');
-    } else {
+    // Reset active button classes
+    btnNoir?.classList.remove('active');
+    btnCrimson?.classList.remove('active');
+    btnPurple?.classList.remove('active');
+
+    if (theme === 'noir') {
       htmlRoot.setAttribute('data-theme', 'noir');
       btnNoir?.classList.add('active');
-      btnCrimson?.classList.remove('active');
       localStorage.setItem(THEME_STORAGE_KEY, 'noir');
+      // On Noir: Use Image 1 as main hero portrait
+      selectPhoto(0);
+    } else if (theme === 'purple') {
+      htmlRoot.setAttribute('data-theme', 'purple');
+      btnPurple?.classList.add('active');
+      localStorage.setItem(THEME_STORAGE_KEY, 'purple');
+      // On Purple: Use Image 3 as main hero portrait
+      selectPhoto(2);
+    } else {
+      htmlRoot.setAttribute('data-theme', 'crimson');
+      btnCrimson?.classList.add('active');
+      localStorage.setItem(THEME_STORAGE_KEY, 'crimson');
+      // On Crimson (Default): Use Image 2 as main hero portrait
+      selectPhoto(1);
     }
   }
 
-  // Load saved theme or default to noir
-  const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || 'noir';
-  setTheme(savedTheme);
+  // Always open on Crimson (Godfather Red with Image 2) on load
+  setTheme('crimson');
+  try {
+    localStorage.removeItem(THEME_STORAGE_KEY);
+  } catch (e) {}
 
   btnNoir?.addEventListener('click', () => setTheme('noir'));
   btnCrimson?.addEventListener('click', () => setTheme('crimson'));
+  btnPurple?.addEventListener('click', () => setTheme('purple'));
 
   // --------------------------------------------------------------------------
-  // 2. Contact Dispatch Modal
+  // 3. Scroll Reading Progress Indicator
+  // --------------------------------------------------------------------------
+  const scrollProgressBar = document.getElementById('scrollProgressBar');
+  window.addEventListener('scroll', () => {
+    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (totalHeight > 0) {
+      const progress = (window.scrollY / totalHeight) * 100;
+      if (scrollProgressBar) scrollProgressBar.style.width = `${progress}%`;
+    }
+  }, { passive: true });
+
+  // --------------------------------------------------------------------------
+  // 4. Chiaroscuro Ambient Cursor Spotlight (Desktop)
+  // --------------------------------------------------------------------------
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let targetX = mouseX;
+  let targetY = mouseY;
+  let isTicking = false;
+
+  window.addEventListener('mousemove', (e) => {
+    targetX = e.clientX;
+    targetY = e.clientY;
+
+    if (!isTicking) {
+      requestAnimationFrame(() => {
+        mouseX += (targetX - mouseX) * 0.18;
+        mouseY += (targetY - mouseY) * 0.18;
+        document.documentElement.style.setProperty('--mouse-x', `${targetX}px`);
+        document.documentElement.style.setProperty('--mouse-y', `${targetY}px`);
+        isTicking = false;
+      });
+      isTicking = true;
+    }
+  }, { passive: true });
+
+  // --------------------------------------------------------------------------
+  // 4. 3D Micro-Parallax Tilt & Mobile Touch Interaction on Portrait
+  // --------------------------------------------------------------------------
+  const portraitArtwork = document.getElementById('portraitArtwork');
+
+  if (portraitArtwork) {
+    // Desktop Fine Pointer Parallax
+    if (window.matchMedia('(pointer: fine)').matches) {
+      let tiltFrame;
+
+      portraitArtwork.addEventListener('mousemove', (e) => {
+        cancelAnimationFrame(tiltFrame);
+        tiltFrame = requestAnimationFrame(() => {
+          const rect = portraitArtwork.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          
+          const rotateX = ((y - centerY) / centerY) * -7;
+          const rotateY = ((x - centerX) / centerX) * 7;
+          
+          portraitArtwork.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-4px)`;
+        });
+      });
+
+      portraitArtwork.addEventListener('mouseleave', () => {
+        cancelAnimationFrame(tiltFrame);
+        portraitArtwork.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+      });
+    }
+
+    // Mobile Phone Touch & Tap Color Activation
+    portraitArtwork.addEventListener('touchstart', () => {
+      portraitArtwork.classList.toggle('is-color-active');
+    }, { passive: true });
+
+    // Mobile Device Orientation Gyroscope Tilt (Phones & Tablets)
+    if (window.DeviceOrientationEvent && window.matchMedia('(max-width: 1024px)').matches) {
+      window.addEventListener('deviceorientation', (e) => {
+        if (e.gamma !== null && e.beta !== null) {
+          const tiltX = Math.max(-10, Math.min(10, e.beta - 40)) * 0.35;
+          const tiltY = Math.max(-10, Math.min(10, e.gamma)) * 0.35;
+          portraitArtwork.style.transform = `perspective(1000px) rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg)`;
+        }
+      }, { passive: true });
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // 5. Subtle Magnetic Pull on Action Buttons (Desktop)
+  // --------------------------------------------------------------------------
+  if (window.matchMedia('(pointer: fine)').matches) {
+    const magneticBtns = document.querySelectorAll('.action-btn-primary, .insta-highlight-btn');
+    
+    magneticBtns.forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        
+        btn.style.transform = `translate(${x * 0.12}px, ${y * 0.12}px)`;
+      });
+
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = 'translate(0px, 0px)';
+      });
+    });
+  }
+
+  // --------------------------------------------------------------------------
+  // 6. Contact Dispatch Modal
   // --------------------------------------------------------------------------
   const contactModal = document.getElementById('contactModal');
   const modalBackdrop = document.getElementById('modalBackdrop');
@@ -164,14 +360,22 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --------------------------------------------------------------------------
-  // 3. Fullscreen Chiaroscuro Lightbox
+  // 7. Fullscreen Lightbox
   // --------------------------------------------------------------------------
-  const portraitArtwork = document.getElementById('portraitArtwork');
   const portraitLightbox = document.getElementById('portraitLightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lbTitle = document.getElementById('lbTitle');
+  const lbAct = document.getElementById('lbAct');
   const lightboxBackdrop = document.getElementById('lightboxBackdrop');
   const lightboxCloseBtn = document.getElementById('lightboxCloseBtn');
+  const seatedPortraitCard = document.getElementById('seatedPortraitCard');
+  const intermissionStudy = document.getElementById('intermissionStudy');
 
-  function openLightbox() {
+  function openLightbox(src, title, act) {
+    if (lightboxImg) lightboxImg.src = src || currentPhoto.src;
+    if (lbTitle) lbTitle.textContent = title || currentPhoto.title;
+    if (lbAct) lbAct.textContent = act || currentPhoto.act;
+
     portraitLightbox?.classList.add('is-active');
     portraitLightbox?.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
@@ -183,21 +387,30 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.style.overflow = '';
   }
 
+  // Click Hero Portrait
   if (portraitArtwork) {
-    portraitArtwork.addEventListener('click', openLightbox);
-    portraitArtwork.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        openLightbox();
+    portraitArtwork.addEventListener('click', (e) => {
+      if (!e.target.closest('.pt-switch-btn')) {
+        openLightbox(currentPhoto.src, currentPhoto.title, currentPhoto.act);
       }
     });
   }
+
+  // Click Seated Portrait Card
+  seatedPortraitCard?.addEventListener('click', () => {
+    openLightbox('assets/pratyush-suit-seated.jpeg', 'PRATYUSH YADAV', 'ACT III — COMPOSURE');
+  });
+
+  // Click Visual Study Intermission
+  intermissionStudy?.addEventListener('click', () => {
+    openLightbox('assets/pratyush-suit-study.jpeg', 'THE STUDY // LUCKNOW', 'ACT II — THE STUDY');
+  });
 
   lightboxCloseBtn?.addEventListener('click', closeLightbox);
   lightboxBackdrop?.addEventListener('click', closeLightbox);
 
   // --------------------------------------------------------------------------
-  // 4. Global Keyboard Handlers
+  // 8. Global Keyboard Handlers
   // --------------------------------------------------------------------------
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
@@ -210,7 +423,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --------------------------------------------------------------------------
-  // 5. Minimalist Scroll Reveal Observer
+  // 9. Minimalist Scroll Reveal Observer
   // --------------------------------------------------------------------------
   const revealElements = document.querySelectorAll('.reveal');
 
