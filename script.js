@@ -39,9 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. Photos Data & Theme Mapping
   // --------------------------------------------------------------------------
   const PHOTOS = [
-    { src: 'assets/bauwabhaiy.jpeg', title: 'PRATYUSH YADAV', act: 'ACT I — CLOSE-UP' },
-    { src: 'assets/pratyush-suit-study.jpeg', title: 'THE STUDY // LUCKNOW', act: 'ACT II — THE STUDY' },
-    { src: 'assets/pratyush-suit-seated.jpeg', title: 'COMPOSURE', act: 'ACT III — COMPOSURE' }
+    { src: 'assets/bauwabhaiy.jpeg', title: 'PRATYUSH YADAV', act: 'ACT I: CLOSE-UP' },
+    { src: 'assets/pratyush-suit-study.jpeg', title: 'THE STUDY // LUCKNOW', act: 'ACT II: THE STUDY' },
+    { src: 'assets/pratyush-suit-seated.jpeg', title: 'COMPOSURE', act: 'ACT III: COMPOSURE' }
   ];
 
   const mainPortraitImg = document.getElementById('mainPortraitImg');
@@ -82,12 +82,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --------------------------------------------------------------------------
-  // 2. Theme Switcher (Noir -> Image 1, Crimson -> Image 2, Purple -> Image 3)
+  // 2. Theme Switcher (Noir -> Image 1, Crimson -> Image 2, Violet -> Image 3)
   // --------------------------------------------------------------------------
   const htmlRoot = document.documentElement;
   const btnNoir = document.getElementById('btnNoir');
   const btnCrimson = document.getElementById('btnCrimson');
-  const btnPurple = document.getElementById('btnPurple');
+  const btnViolet = document.getElementById('btnViolet') || document.getElementById('btnPurple');
 
   const THEME_STORAGE_KEY = 'pratyush_yadav_theme';
 
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Reset active button classes
     btnNoir?.classList.remove('active');
     btnCrimson?.classList.remove('active');
-    btnPurple?.classList.remove('active');
+    btnViolet?.classList.remove('active');
 
     if (theme === 'noir') {
       htmlRoot.setAttribute('data-theme', 'noir');
@@ -103,11 +103,11 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.setItem(THEME_STORAGE_KEY, 'noir');
       // On Noir: Use Image 1 as main hero portrait
       selectPhoto(0);
-    } else if (theme === 'purple') {
-      htmlRoot.setAttribute('data-theme', 'purple');
-      btnPurple?.classList.add('active');
-      localStorage.setItem(THEME_STORAGE_KEY, 'purple');
-      // On Purple: Use Image 3 as main hero portrait
+    } else if (theme === 'violet' || theme === 'purple') {
+      htmlRoot.setAttribute('data-theme', 'violet');
+      btnViolet?.classList.add('active');
+      localStorage.setItem(THEME_STORAGE_KEY, 'violet');
+      // On Violet: Use Image 3 as main hero portrait
       selectPhoto(2);
     } else {
       htmlRoot.setAttribute('data-theme', 'crimson');
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnNoir?.addEventListener('click', () => setTheme('noir'));
   btnCrimson?.addEventListener('click', () => setTheme('crimson'));
-  btnPurple?.addEventListener('click', () => setTheme('purple'));
+  btnViolet?.addEventListener('click', () => setTheme('violet'));
 
   // --------------------------------------------------------------------------
   // 3. Scroll Reading Progress Indicator
