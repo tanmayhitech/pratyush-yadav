@@ -2233,3 +2233,20 @@ button {
     padding: 0 0.5rem;
   }
 }
+
+.prologue-sound-hint {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: clamp(0.6rem, 2vw, 0.75rem);
+  letter-spacing: 0.24em;
+  color: var(--gold-accent);
+  margin-top: 1.25rem;
+  text-transform: uppercase;
+  animation: pulseHint 1.8s infinite alternate ease-in-out;
+  cursor: pointer;
+}
+
+@keyframes pulseHint {
+  0% { opacity: 0.45; transform: translateY(0); }
+  100% { opacity: 1; transform: translateY(-2px); }
+}

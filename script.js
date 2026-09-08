@@ -25,7 +25,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  prologueScreen?.addEventListener('click', dismissPrologue);
+  prologueScreen?.addEventListener('click', () => {
+    dismissPrologue();
+    triggerDefaultAudio();
+  });
+
+  prologueScreen?.addEventListener('touchstart', () => {
+    dismissPrologue();
+    triggerDefaultAudio();
+  }, { passive: true });
 
   // Auto-dismiss after 1 second
   const prologueTimer = setTimeout(dismissPrologue, 1000);
@@ -33,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('keydown', (e) => {
     clearTimeout(prologueTimer);
     dismissPrologue();
+    triggerDefaultAudio();
   }, { once: true });
 
   // --------------------------------------------------------------------------
@@ -261,19 +270,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (play) {
       reelVideo.muted = false;
-      reelVideo.volume = 0;
+      if (reelVideo.paused) {
+        reelVideo.play().catch(() => {});
+      }
       isAudioPlaying = true;
       
-      // Smooth fade-in volume over 1.2s
-      let currentVol = 0;
+      // Fast smooth ramp up to audible level
+      let currentVol = 0.25;
+      reelVideo.volume = currentVol;
       audioFadeInterval = setInterval(() => {
-        if (currentVol < 0.75) {
-          currentVol += 0.05;
+        if (currentVol < 0.9) {
+          currentVol += 0.1;
           reelVideo.volume = Math.min(1, currentVol);
         } else {
           clearInterval(audioFadeInterval);
         }
-      }, 70);
+      }, 60);
 
       if (audioToggleBtn) {
         audioToggleBtn.classList.add('is-playing');
