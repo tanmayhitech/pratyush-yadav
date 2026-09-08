@@ -323,20 +323,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --------------------------------------------------------------------------
-  // 5.5. Cinema & Motion Reel Video Controller (Smooth Audio Fade-In)
+  // 5.5. Cinema & Motion Reel Video Controller (Audio Capsule Sync & Full View)
   // --------------------------------------------------------------------------
   const reelVideo = document.getElementById('pratyushReelVideo');
-  const videoPlayPauseBtn = document.getElementById('videoPlayPauseBtn');
-  const playPauseIcon = document.getElementById('playPauseIcon');
-  const playPauseText = document.getElementById('playPauseText');
-
-  const videoSoundBtn = document.getElementById('videoSoundBtn');
-  const soundIcon = document.getElementById('soundIcon');
-  const soundText = document.getElementById('soundText');
-
   const audioToggleBtn = document.getElementById('audioToggleBtn');
   const audioLabel = document.getElementById('audioLabel');
   const reelVideoFrame = document.getElementById('reelVideoFrame');
+  const videoFullscreenBtn = document.getElementById('videoFullscreenBtn');
 
   let isAudioPlaying = false;
   let audioFadeInterval = null;
@@ -362,14 +355,12 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           clearInterval(audioFadeInterval);
         }
-      }, 60);
+      }, 50);
 
       if (audioToggleBtn) {
         audioToggleBtn.classList.add('is-playing');
         if (audioLabel) audioLabel.textContent = 'SOUND // ON';
       }
-      if (soundIcon) soundIcon.textContent = '🔊';
-      if (soundText) soundText.textContent = 'MUTE';
       if (reelVideoFrame) reelVideoFrame.classList.add('is-playing');
     } else {
       // Smooth fade-out volume
@@ -383,31 +374,22 @@ document.addEventListener('DOMContentLoaded', () => {
           reelVideo.volume = 0;
           clearInterval(audioFadeInterval);
         }
-      }, 50);
+      }, 40);
 
       isAudioPlaying = false;
       if (audioToggleBtn) {
         audioToggleBtn.classList.remove('is-playing');
         if (audioLabel) audioLabel.textContent = 'SOUND // OFF';
       }
-      if (soundIcon) soundIcon.textContent = '🔇';
-      if (soundText) soundText.textContent = 'UNMUTE';
     }
   }
 
-  // Header Audio Toggle
+  // Floating Cinema Audio Capsule Toggle
   audioToggleBtn?.addEventListener('click', () => {
     setAudioState(!isAudioPlaying);
   });
 
-  // Reel Video Sound Button
-  videoSoundBtn?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    setAudioState(!isAudioPlaying);
-  });
-
   // Reel Video Fullscreen Full View Button
-  const videoFullscreenBtn = document.getElementById('videoFullscreenBtn');
   videoFullscreenBtn?.addEventListener('click', (e) => {
     e.stopPropagation();
     if (!reelVideo) return;
@@ -420,28 +402,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (reelVideoFrame && reelVideoFrame.requestFullscreen) {
       reelVideoFrame.requestFullscreen();
     }
-  });
-
-  // Reel Video Play / Pause Button
-  videoPlayPauseBtn?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (!reelVideo) return;
-    if (reelVideo.paused) {
-      reelVideo.play();
-      if (playPauseIcon) playPauseIcon.textContent = '❚❚';
-      if (playPauseText) playPauseText.textContent = 'PAUSE';
-      if (reelVideoFrame) reelVideoFrame.classList.add('is-playing');
-    } else {
-      reelVideo.pause();
-      if (playPauseIcon) playPauseIcon.textContent = '►';
-      if (playPauseText) playPauseText.textContent = 'PLAY';
-      if (reelVideoFrame) reelVideoFrame.classList.remove('is-playing');
-    }
-  });
-
-  // Clicking the video directly toggles play/pause
-  reelVideo?.addEventListener('click', () => {
-    videoPlayPauseBtn?.click();
   });
 
   // --------------------------------------------------------------------------

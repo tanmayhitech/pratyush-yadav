@@ -1530,13 +1530,12 @@ button {
   right: 14px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   pointer-events: auto;
   z-index: 10;
   gap: 0.5rem;
 }
 
-.reel-ctrl-left,
 .reel-ctrl-right {
   display: inline-flex;
   align-items: center;
@@ -2093,18 +2092,51 @@ button {
 }
 
 /* --------------------------------------------------------------------------
-   10. Scroll Reveals & Staggered Animations
+   10. Scroll Reveals & Buttery Smooth Staggered Animations
    -------------------------------------------------------------------------- */
 .reveal {
   opacity: 0;
-  transform: translateY(22px);
-  transition: opacity var(--speed-slow), transform var(--speed-slow);
+  transform: translateY(18px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
 
 .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Buttery Tactile Micro-Press States */
+button,
+a.action-btn-ghost,
+a.insta-highlight-btn,
+.action-btn-primary,
+.theme-btn,
+.pt-switch-btn,
+.audio-capsule-btn,
+.reel-action-btn {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+button:active,
+a.action-btn-ghost:active,
+a.insta-highlight-btn:active,
+.action-btn-primary:active,
+.theme-btn:active,
+.pt-switch-btn:active,
+.audio-capsule-btn:active,
+.reel-action-btn:active {
+  transform: scale(0.975);
+  transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* High-Performance 120Hz GPU Layer Optimization */
+.minimal-perspectives-section,
+.cinematic-reel-section,
+.connect-section {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 650px;
 }
 
 /* --------------------------------------------------------------------------
