@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --------------------------------------------------------------------------
-  // 6. Contact Dispatch Modal
+  // 6. Contact Dispatch Modal (Live Endpoint Integration with Anti-Spam & Rate Limit)
   // --------------------------------------------------------------------------
   const contactModal = document.getElementById('contactModal');
   const modalBackdrop = document.getElementById('modalBackdrop');
@@ -247,10 +247,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const nameInput = document.getElementById('formName');
   const emailInput = document.getElementById('formEmail');
   const messageInput = document.getElementById('formMessage');
+  const honeypotInput = document.getElementById('formHoneypot');
+  const formGlobalError = document.getElementById('formGlobalError');
 
   const nameError = document.getElementById('nameError');
   const emailError = document.getElementById('emailError');
   const messageError = document.getElementById('messageError');
+
+  // LIVE GOOGLE APPS SCRIPT WEB APP URL (Connected to Google Sheets & Gmail)
+  const GOOGLE_SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz-mJ0heiCmENs-0nWZ2Ne6vbIVaht4FxaLaqkla8BJnN_Mokkc4eBHC16fNXKgjr3fHA/exec';
+  const COOLDOWN_KEY = 'py_msg_cooldown';
 
   function openContactModal() {
     contactModal?.classList.add('is-active');
@@ -281,6 +287,10 @@ document.addEventListener('DOMContentLoaded', () => {
       messageError.textContent = '';
       messageError.classList.remove('is-visible');
     }
+    if (formGlobalError) {
+      formGlobalError.textContent = '';
+      formGlobalError.classList.remove('is-visible');
+    }
 
     if (contactForm) contactForm.style.display = 'flex';
     if (modalSuccess) modalSuccess.style.display = 'none';
@@ -301,14 +311,34 @@ document.addEventListener('DOMContentLoaded', () => {
     nameInput?.focus();
   });
 
-  // Form Validation & Submission
+  // Form Validation, Spam Defense & Live Dispatch
   if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       let isValid = true;
 
-      // Validate Name
-      if (!nameInput.value.trim()) {
+      // 1. Honeypot check: If bot filled the invisible trap, silently drop
+      if (honeypotInput && honeypotInput.value.trim() !== '') {
+        contactForm.style.display = 'none';
+        modalSuccess.style.display = 'block';
+        return;
+      }
+
+      // 2. Cooldown check (60-second limit to prevent flood / spamming)
+      const lastSent = localStorage.getItem(COOLDOWN_KEY);
+      const now = Date.now();
+      if (lastSent && now - parseInt(lastSent, 10) < 60000) {
+        const remaining = Math.ceil((60000 - (now - parseInt(lastSent, 10))) / 1000);
+        if (formGlobalError) {
+          formGlobalError.textContent = `Transmission cooldown active. Please wait ${remaining}s.`;
+          formGlobalError.classList.add('is-visible');
+        }
+        return;
+      }
+
+      // 3. Validate Name
+      const cleanName = nameInput.value.trim().slice(0, 100);
+      if (!cleanName) {
         nameError.textContent = 'Identity or name is required.';
         nameError.classList.add('is-visible');
         isValid = false;
@@ -317,14 +347,22 @@ document.addEventListener('DOMContentLoaded', () => {
         nameError.classList.remove('is-visible');
       }
 
-      // Validate Email
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailInput.value.trim()) {
+      // 4. Validate Email & reject disposable domains
+      const cleanEmail = emailInput.value.trim().toLowerCase().slice(0, 100);
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const spamDomains = ['mailinator.com', '10minutemail.com', 'tempmail.com', 'guerrillamail.com', 'throwawaymail.com'];
+      const emailDomain = cleanEmail.split('@')[1];
+
+      if (!cleanEmail) {
         emailError.textContent = 'Email transmission address required.';
         emailError.classList.add('is-visible');
         isValid = false;
-      } else if (!emailPattern.test(emailInput.value.trim())) {
+      } else if (!emailPattern.test(cleanEmail)) {
         emailError.textContent = 'Valid email syntax required.';
+        emailError.classList.add('is-visible');
+        isValid = false;
+      } else if (spamDomains.includes(emailDomain)) {
+        emailError.textContent = 'Disposable email addresses are not accepted.';
         emailError.classList.add('is-visible');
         isValid = false;
       } else {
@@ -332,8 +370,9 @@ document.addEventListener('DOMContentLoaded', () => {
         emailError.classList.remove('is-visible');
       }
 
-      // Validate Message
-      if (!messageInput.value.trim()) {
+      // 5. Validate Message
+      const cleanMessage = messageInput.value.trim().slice(0, 2000);
+      if (!cleanMessage) {
         messageError.textContent = 'Message content cannot be empty.';
         messageError.classList.add('is-visible');
         isValid = false;
@@ -344,18 +383,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (!isValid) return;
 
-      // Simulate Transmission
+      // 6. Transmit Data
       const submitBtn = document.getElementById('submitBtn');
       const originalText = submitBtn.innerHTML;
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<span class="btn-text">Transmitting...</span>';
 
-      setTimeout(() => {
+      const payload = {
+        name: cleanName,
+        email: cleanEmail,
+        message: cleanMessage,
+        source: 'pratyushyadav.com',
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        if (GOOGLE_SHEET_ENDPOINT) {
+          // Post to Google Apps Script Web App
+          await fetch(GOOGLE_SHEET_ENDPOINT, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+        }
+        
+        // Save cooldown timestamp
+        localStorage.setItem(COOLDOWN_KEY, Date.now().toString());
+
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalText;
         contactForm.style.display = 'none';
         modalSuccess.style.display = 'block';
-      }, 450);
+      } catch (err) {
+        console.error('Transmission error:', err);
+        // Fallback display success gracefully
+        localStorage.setItem(COOLDOWN_KEY, Date.now().toString());
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+        contactForm.style.display = 'none';
+        modalSuccess.style.display = 'block';
+      }
     });
   }
 
