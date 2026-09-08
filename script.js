@@ -5,6 +5,12 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Ensure user always lands at the top (Hero Page) and not scrolled to video
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  window.scrollTo(0, 0);
+
   // --------------------------------------------------------------------------
   // 0. Bold & Crisp "GODFATHER" 1-Sec Entry Animation
   // --------------------------------------------------------------------------
@@ -311,6 +317,22 @@ document.addEventListener('DOMContentLoaded', () => {
     setAudioState(!isAudioPlaying);
   });
 
+  // Reel Video Fullscreen Full View Button
+  const videoFullscreenBtn = document.getElementById('videoFullscreenBtn');
+  videoFullscreenBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (!reelVideo) return;
+    if (reelVideo.requestFullscreen) {
+      reelVideo.requestFullscreen();
+    } else if (reelVideo.webkitRequestFullscreen) {
+      reelVideo.webkitRequestFullscreen();
+    } else if (reelVideo.webkitEnterFullscreen) {
+      reelVideo.webkitEnterFullscreen();
+    } else if (reelVideoFrame && reelVideoFrame.requestFullscreen) {
+      reelVideoFrame.requestFullscreen();
+    }
+  });
+
   // Reel Video Play / Pause Button
   videoPlayPauseBtn?.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -332,6 +354,39 @@ document.addEventListener('DOMContentLoaded', () => {
   reelVideo?.addEventListener('click', () => {
     videoPlayPauseBtn?.click();
   });
+
+  // --------------------------------------------------------------------------
+  // Default Auto-Audio Playback (Zero Permission Prompts)
+  // --------------------------------------------------------------------------
+  function triggerDefaultAudio() {
+    if (!isAudioPlaying) {
+      setAudioState(true);
+    }
+    cleanupAudioStarters();
+  }
+
+  function cleanupAudioStarters() {
+    window.removeEventListener('click', triggerDefaultAudio);
+    window.removeEventListener('touchstart', triggerDefaultAudio);
+    window.removeEventListener('scroll', triggerDefaultAudio);
+    window.removeEventListener('keydown', triggerDefaultAudio);
+  }
+
+  window.addEventListener('click', triggerDefaultAudio, { once: true, passive: true });
+  window.addEventListener('touchstart', triggerDefaultAudio, { once: true, passive: true });
+  window.addEventListener('scroll', triggerDefaultAudio, { once: true, passive: true });
+  window.addEventListener('keydown', triggerDefaultAudio, { once: true, passive: true });
+
+  // Immediate attempt on load
+  setTimeout(() => {
+    if (reelVideo && !isAudioPlaying) {
+      reelVideo.play().then(() => {
+        setAudioState(true);
+      }).catch(() => {
+        // Handled automatically on first scroll / touch gesture
+      });
+    }
+  }, 400);
 
   // --------------------------------------------------------------------------
   // 6. Contact Dispatch Modal (Live Endpoint Integration with Anti-Spam & Rate Limit)

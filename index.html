@@ -321,15 +321,24 @@
             
             <!-- Video Control Overlays -->
             <div class="reel-controls-overlay">
-              <button class="reel-action-btn" id="videoPlayPauseBtn" aria-label="Play / Pause Video">
-                <span class="ctrl-icon" id="playPauseIcon">❚❚</span>
-                <span class="ctrl-text" id="playPauseText">PAUSE</span>
-              </button>
-              
-              <button class="reel-action-btn" id="videoSoundBtn" aria-label="Toggle Sound">
-                <span class="ctrl-icon" id="soundIcon">🔇</span>
-                <span class="ctrl-text" id="soundText">UNMUTE</span>
-              </button>
+              <div class="reel-ctrl-left">
+                <button class="reel-action-btn" id="videoPlayPauseBtn" aria-label="Play / Pause Video">
+                  <span class="ctrl-icon" id="playPauseIcon">❚❚</span>
+                  <span class="ctrl-text" id="playPauseText">PAUSE</span>
+                </button>
+                
+                <button class="reel-action-btn" id="videoSoundBtn" aria-label="Toggle Sound">
+                  <span class="ctrl-icon" id="soundIcon">🔊</span>
+                  <span class="ctrl-text" id="soundText">MUTE</span>
+                </button>
+              </div>
+
+              <div class="reel-ctrl-right">
+                <button class="reel-action-btn" id="videoFullscreenBtn" aria-label="Fullscreen Theatre View">
+                  <span class="ctrl-icon">⛶</span>
+                  <span class="ctrl-text">FULL VIEW</span>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -506,6 +515,6 @@
   </div>
 
   <!-- Scripts (Cache Busted) -->
-  <script src="script.js?v=2.2"></script>
+  <script src="script.js?v=2.3"></script>
 </body>
 </html>

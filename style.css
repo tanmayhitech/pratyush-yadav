@@ -1411,6 +1411,14 @@ button {
   justify-content: space-between;
   pointer-events: auto;
   z-index: 10;
+  gap: 0.5rem;
+}
+
+.reel-ctrl-left,
+.reel-ctrl-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .reel-action-btn {
