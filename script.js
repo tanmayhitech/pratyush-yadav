@@ -25,15 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  prologueScreen?.addEventListener('click', () => {
-    dismissPrologue();
-    triggerDefaultAudio();
-  });
-
-  prologueScreen?.addEventListener('touchstart', () => {
-    dismissPrologue();
-    triggerDefaultAudio();
-  }, { passive: true });
+  prologueScreen?.addEventListener('click', dismissPrologue);
 
   // Auto-dismiss after 1 second
   const prologueTimer = setTimeout(dismissPrologue, 1000);
@@ -41,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('keydown', (e) => {
     clearTimeout(prologueTimer);
     dismissPrologue();
-    triggerDefaultAudio();
   }, { once: true });
 
   // --------------------------------------------------------------------------
@@ -366,39 +357,6 @@ document.addEventListener('DOMContentLoaded', () => {
   reelVideo?.addEventListener('click', () => {
     videoPlayPauseBtn?.click();
   });
-
-  // --------------------------------------------------------------------------
-  // Default Auto-Audio Playback (Zero Permission Prompts)
-  // --------------------------------------------------------------------------
-  function triggerDefaultAudio() {
-    if (!isAudioPlaying) {
-      setAudioState(true);
-    }
-    cleanupAudioStarters();
-  }
-
-  function cleanupAudioStarters() {
-    window.removeEventListener('click', triggerDefaultAudio);
-    window.removeEventListener('touchstart', triggerDefaultAudio);
-    window.removeEventListener('scroll', triggerDefaultAudio);
-    window.removeEventListener('keydown', triggerDefaultAudio);
-  }
-
-  window.addEventListener('click', triggerDefaultAudio, { once: true, passive: true });
-  window.addEventListener('touchstart', triggerDefaultAudio, { once: true, passive: true });
-  window.addEventListener('scroll', triggerDefaultAudio, { once: true, passive: true });
-  window.addEventListener('keydown', triggerDefaultAudio, { once: true, passive: true });
-
-  // Immediate attempt on load
-  setTimeout(() => {
-    if (reelVideo && !isAudioPlaying) {
-      reelVideo.play().then(() => {
-        setAudioState(true);
-      }).catch(() => {
-        // Handled automatically on first scroll / touch gesture
-      });
-    }
-  }, 400);
 
   // --------------------------------------------------------------------------
   // 6. Contact Dispatch Modal (Live Endpoint Integration with Anti-Spam & Rate Limit)
