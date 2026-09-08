@@ -54,32 +54,21 @@
       <span class="stamp-loc">LKO</span>
     </div>
 
-    <div class="header-right-controls">
-      <button class="audio-toggle-btn" id="audioToggleBtn" aria-label="Toggle Cinema Audio">
-        <span class="audio-waves" aria-hidden="true">
-          <span class="bar bar-1"></span>
-          <span class="bar bar-2"></span>
-          <span class="bar bar-3"></span>
-        </span>
-        <span class="audio-label" id="audioLabel">AUDIO // OFF</span>
+    <div class="theme-switcher-wrapper">
+      <button class="theme-btn" id="btnNoir" aria-label="Switch to Noir Mode">
+        <span class="btn-indicator"></span>
+        <span class="btn-label">NOIR</span>
       </button>
-
-      <div class="theme-switcher-wrapper">
-        <button class="theme-btn" id="btnNoir" aria-label="Switch to Noir Mode">
-          <span class="btn-indicator"></span>
-          <span class="btn-label">NOIR</span>
-        </button>
-        <span class="theme-divider">/</span>
-        <button class="theme-btn active" id="btnCrimson" aria-label="Switch to Crimson Red Mode">
-          <span class="btn-indicator crimson-ind"></span>
-          <span class="btn-label">CRIMSON</span>
-        </button>
-        <span class="theme-divider">/</span>
-        <button class="theme-btn" id="btnViolet" aria-label="Switch to Violet Mode">
-          <span class="btn-indicator violet-ind"></span>
-          <span class="btn-label">VIOLET</span>
-        </button>
-      </div>
+      <span class="theme-divider">/</span>
+      <button class="theme-btn active" id="btnCrimson" aria-label="Switch to Crimson Red Mode">
+        <span class="btn-indicator crimson-ind"></span>
+        <span class="btn-label">CRIMSON</span>
+      </button>
+      <span class="theme-divider">/</span>
+      <button class="theme-btn" id="btnViolet" aria-label="Switch to Violet Mode">
+        <span class="btn-indicator violet-ind"></span>
+        <span class="btn-label">VIOLET</span>
+      </button>
     </div>
   </header>
 
@@ -514,7 +503,27 @@
     </div>
   </div>
 
+  <!-- ====================================================================
+       10. FLOATING BOTTOM CORNER CINEMA AUDIO CAPSULE
+       ==================================================================== -->
+  <aside class="floating-audio-capsule" id="audioCapsuleWidget" aria-label="Cinema Audio Controls">
+    <button class="audio-capsule-btn" id="audioToggleBtn" aria-label="Toggle Cinema Audio">
+      <span class="audio-disc-icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+      </span>
+      <span class="audio-waves" aria-hidden="true">
+        <span class="bar bar-1"></span>
+        <span class="bar bar-2"></span>
+        <span class="bar bar-3"></span>
+      </span>
+      <span class="audio-label" id="audioLabel">SOUND // OFF</span>
+    </button>
+  </aside>
+
   <!-- Scripts (Cache Busted) -->
-  <script src="script.js?v=2.6"></script>
+  <script src="script.js?v=2.7"></script>
 </body>
 </html>

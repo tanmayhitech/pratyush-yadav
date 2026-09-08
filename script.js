@@ -280,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (audioToggleBtn) {
         audioToggleBtn.classList.add('is-playing');
-        if (audioLabel) audioLabel.textContent = 'AUDIO // ON';
+        if (audioLabel) audioLabel.textContent = 'SOUND // ON';
       }
       if (soundIcon) soundIcon.textContent = '🔊';
       if (soundText) soundText.textContent = 'MUTE';
@@ -302,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
       isAudioPlaying = false;
       if (audioToggleBtn) {
         audioToggleBtn.classList.remove('is-playing');
-        if (audioLabel) audioLabel.textContent = 'AUDIO // OFF';
+        if (audioLabel) audioLabel.textContent = 'SOUND // OFF';
       }
       if (soundIcon) soundIcon.textContent = '🔇';
       if (soundText) soundText.textContent = 'UNMUTE';
