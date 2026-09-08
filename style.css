@@ -719,6 +719,37 @@ button {
   overflow: hidden;
   background-color: #000000;
   pointer-events: none;
+  transform-style: preserve-3d;
+}
+
+/* 3D Dynamic Gyro & Pointer Glare Sheen */
+.portrait-glare-sheen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.04) 40%, rgba(0, 0, 0, 0) 75%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 8;
+  will-change: transform, opacity, background;
+}
+
+.portrait-frame:hover .portrait-glare-sheen,
+.portrait-frame.has-gyro-active .portrait-glare-sheen {
+  opacity: 1;
+}
+
+[data-theme="crimson"] .portrait-glare-sheen {
+  background: radial-gradient(circle at 50% 50%, rgba(255, 220, 230, 0.22) 0%, rgba(225, 29, 72, 0.08) 45%, rgba(0, 0, 0, 0) 75%);
+}
+
+[data-theme="violet"] .portrait-glare-sheen,
+[data-theme="purple"] .portrait-glare-sheen {
+  background: radial-gradient(circle at 50% 50%, rgba(230, 220, 255, 0.24) 0%, rgba(139, 92, 246, 0.1) 45%, rgba(0, 0, 0, 0) 75%);
 }
 
 /* Real-Color Hover Animation for Portrait */

@@ -168,33 +168,94 @@ document.addEventListener('DOMContentLoaded', () => {
   // --------------------------------------------------------------------------
   // 4. 3D Micro-Parallax Tilt & Mobile Touch Interaction on Portrait
   // --------------------------------------------------------------------------
+  // 4. Portrait 3D Parallax & Mobile Gyroscope Engine
+  // --------------------------------------------------------------------------
   const portraitArtwork = document.getElementById('portraitArtwork');
+  const portraitGlareSheen = document.getElementById('portraitGlareSheen');
+  const mainPortraitImg = document.getElementById('mainPortraitImg');
+  const lapelBadges = document.querySelectorAll('.godfather-rose-badge, .purple-amethyst-badge');
 
   if (portraitArtwork) {
+    let currentTiltX = 0;
+    let currentTiltY = 0;
+    let targetTiltX = 0;
+    let targetTiltY = 0;
+    let gyroAnimFrame = null;
+    let isPortraitVisible = true;
+    let isGyroActive = false;
+
+    // Viewport Visibility Guard to preserve 100% battery when scrolled away
+    if ('IntersectionObserver' in window) {
+      const portraitObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          isPortraitVisible = entry.isIntersecting;
+          if (!isPortraitVisible && gyroAnimFrame) {
+            cancelAnimationFrame(gyroAnimFrame);
+            gyroAnimFrame = null;
+          } else if (isPortraitVisible && !gyroAnimFrame) {
+            render3DLoop();
+          }
+        });
+      }, { threshold: 0.1 });
+      portraitObserver.observe(portraitArtwork);
+    }
+
+    // 60fps/120fps Smooth Physics Render Loop (LERP Damping)
+    function render3DLoop() {
+      if (!isPortraitVisible) return;
+
+      // Smooth interpolation for butter-smooth motion
+      currentTiltX += (targetTiltX - currentTiltX) * 0.12;
+      currentTiltY += (targetTiltY - currentTiltY) * 0.12;
+
+      const rotX = currentTiltX.toFixed(2);
+      const rotY = currentTiltY.toFixed(2);
+
+      // 1. Base Frame 3D Rotation
+      portraitArtwork.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+
+      // 2. Multi-Layer Inner Image Parallax (Opposite Shift)
+      if (mainPortraitImg) {
+        const imgShiftX = (currentTiltY * -0.55).toFixed(1);
+        const imgShiftY = (currentTiltX * 0.55).toFixed(1);
+        mainPortraitImg.style.transform = `scale(1.04) translate(${imgShiftX}px, ${imgShiftY}px)`;
+      }
+
+      // 3. Lapel Badge Floating 3D Depth
+      lapelBadges.forEach(badge => {
+        const badgeShiftX = (currentTiltY * 0.85).toFixed(1);
+        const badgeShiftY = (currentTiltX * -0.85).toFixed(1);
+        badge.style.transform = `translate(${badgeShiftX}px, ${badgeShiftY}px) translateZ(25px)`;
+      });
+
+      // 4. Specular Glare Reflection Movement
+      if (portraitGlareSheen) {
+        const glarePosX = Math.max(10, Math.min(90, 50 + currentTiltY * 2.8)).toFixed(1);
+        const glarePosY = Math.max(10, Math.min(90, 50 + currentTiltX * 2.8)).toFixed(1);
+        portraitGlareSheen.style.background = `radial-gradient(circle at ${glarePosX}% ${glarePosY}%, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.04) 40%, rgba(0, 0, 0, 0) 75%)`;
+      }
+
+      gyroAnimFrame = requestAnimationFrame(render3DLoop);
+    }
+
+    render3DLoop();
+
     // Desktop Fine Pointer Parallax
     if (window.matchMedia('(pointer: fine)').matches) {
-      let tiltFrame;
-
       portraitArtwork.addEventListener('mousemove', (e) => {
-        cancelAnimationFrame(tiltFrame);
-        tiltFrame = requestAnimationFrame(() => {
-          const rect = portraitArtwork.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-          
-          const centerX = rect.width / 2;
-          const centerY = rect.height / 2;
-          
-          const rotateX = ((y - centerY) / centerY) * -7;
-          const rotateY = ((x - centerX) / centerX) * 7;
-          
-          portraitArtwork.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-4px)`;
-        });
+        const rect = portraitArtwork.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        targetTiltX = ((y - centerY) / centerY) * -7.5;
+        targetTiltY = ((x - centerX) / centerX) * 7.5;
       });
 
       portraitArtwork.addEventListener('mouseleave', () => {
-        cancelAnimationFrame(tiltFrame);
-        portraitArtwork.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+        targetTiltX = 0;
+        targetTiltY = 0;
       });
     }
 
@@ -203,15 +264,43 @@ document.addEventListener('DOMContentLoaded', () => {
       portraitArtwork.classList.toggle('is-color-active');
     }, { passive: true });
 
-    // Mobile Device Orientation Gyroscope Tilt (Phones & Tablets)
+    // Mobile Gyroscope (DeviceOrientation) Handler
+    function handleOrientationEvent(e) {
+      if (e.beta === null || e.gamma === null) return;
+
+      if (!isGyroActive) {
+        isGyroActive = true;
+        portraitArtwork.classList.add('has-gyro-active');
+      }
+
+      // Natural resting phone holding angle is ~45deg beta
+      const normalizedBeta = e.beta - 45;
+      const normalizedGamma = e.gamma;
+
+      // Clamped luxury tilt angles
+      targetTiltX = Math.max(-12, Math.min(12, normalizedBeta * 0.45));
+      targetTiltY = Math.max(-12, Math.min(12, normalizedGamma * 0.45));
+    }
+
+    // Enable Gyro on Mobile Devices
     if (window.DeviceOrientationEvent && window.matchMedia('(max-width: 1024px)').matches) {
-      window.addEventListener('deviceorientation', (e) => {
-        if (e.gamma !== null && e.beta !== null) {
-          const tiltX = Math.max(-10, Math.min(10, e.beta - 40)) * 0.35;
-          const tiltY = Math.max(-10, Math.min(10, e.gamma)) * 0.35;
-          portraitArtwork.style.transform = `perspective(1000px) rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg)`;
-        }
-      }, { passive: true });
+      // Modern iOS 13+ permission protocol
+      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        const enableGyroOnTouch = () => {
+          DeviceOrientationEvent.requestPermission()
+            .then(state => {
+              if (state === 'granted') {
+                window.addEventListener('deviceorientation', handleOrientationEvent, { passive: true });
+              }
+            })
+            .catch(() => {});
+          window.removeEventListener('touchstart', enableGyroOnTouch);
+        };
+        window.addEventListener('touchstart', enableGyroOnTouch, { passive: true, once: true });
+      } else {
+        // Android and standard Web standard
+        window.addEventListener('deviceorientation', handleOrientationEvent, { passive: true });
+      }
     }
   }
 
