@@ -640,4 +640,82 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     revealElements.forEach(el => el.classList.add('is-visible'));
   }
+
+  // --------------------------------------------------------------------------
+  // 10. Kinetic Moniker Cipher Scramble Engine (PRATYUSH YADAV <-> THE GODFATHER)
+  // --------------------------------------------------------------------------
+  const heroMonolithName = document.getElementById('heroMonolithName');
+
+  if (heroMonolithName) {
+    const cipherChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789✦§∆Ø';
+    const monikers = [
+      'PRATYUSH YADAV',
+      'THE GODFATHER'
+    ];
+    let currentMonikerIndex = 0;
+    let scrambleInterval = null;
+    let isScrambling = false;
+
+    function scrambleToText(targetText, callback) {
+      clearInterval(scrambleInterval);
+      heroMonolithName.classList.add('is-scrambling');
+      isScrambling = true;
+
+      let iteration = 0;
+      const targetLength = targetText.length;
+
+      scrambleInterval = setInterval(() => {
+        let output = '';
+        for (let i = 0; i < targetLength; i++) {
+          if (i < iteration) {
+            output += targetText[i];
+          } else {
+            if (targetText[i] === ' ') {
+              output += ' ';
+            } else {
+              output += cipherChars[Math.floor(Math.random() * cipherChars.length)];
+            }
+          }
+        }
+
+        heroMonolithName.innerText = output;
+
+        if (iteration >= targetLength) {
+          clearInterval(scrambleInterval);
+          heroMonolithName.classList.remove('is-scrambling');
+          isScrambling = false;
+          if (callback) callback();
+        }
+
+        iteration += 1 / 2;
+      }, 25);
+    }
+
+    function toggleMoniker() {
+      currentMonikerIndex = (currentMonikerIndex + 1) % monikers.length;
+      scrambleToText(monikers[currentMonikerIndex]);
+    }
+
+    // Touch & Click event handling (mobile optimized)
+    let lastInteractionTime = 0;
+    function handleUserTrigger(e) {
+      const now = Date.now();
+      if (now - lastInteractionTime < 250) return; // Prevent double firing on touch devices
+      lastInteractionTime = now;
+      if (e) e.preventDefault();
+      toggleMoniker();
+    }
+
+    heroMonolithName.addEventListener('click', handleUserTrigger);
+    heroMonolithName.addEventListener('touchend', (e) => {
+      handleUserTrigger(e);
+    }, { passive: false });
+
+    heroMonolithName.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleMoniker();
+      }
+    });
+  }
 });

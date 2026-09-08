@@ -588,7 +588,7 @@ button {
   color: var(--text-dim);
 }
 
-/* Hero Monolith Name with Cinematic Metallic Shimmer */
+/* Hero Monolith Name with Cinematic Metallic Shimmer & Interactive Cipher */
 .hero-monolith-name {
   font-family: var(--font-display);
   font-size: clamp(2.8rem, 9.5vw, 7.8rem);
@@ -601,12 +601,28 @@ button {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: heroTextShimmer 7s ease-in-out infinite alternate;
-  transition: letter-spacing var(--speed-mid);
-  cursor: default;
+  transition: letter-spacing var(--speed-mid), opacity var(--speed-fast);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  position: relative;
+  display: inline-block;
 }
 
 .hero-monolith-name:hover {
-  letter-spacing: 0.045em;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.hero-monolith-name:active {
+  transform: scale(0.99);
+}
+
+.hero-monolith-name.is-scrambling {
+  letter-spacing: 0.06em;
+  opacity: 0.95;
 }
 
 [data-theme="noir"] .hero-monolith-name {
