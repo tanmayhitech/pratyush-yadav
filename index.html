@@ -54,21 +54,32 @@
       <span class="stamp-loc">LKO</span>
     </div>
 
-    <div class="theme-switcher-wrapper">
-      <button class="theme-btn" id="btnNoir" aria-label="Switch to Noir Mode">
-        <span class="btn-indicator"></span>
-        <span class="btn-label">NOIR</span>
+    <div class="header-right-controls">
+      <button class="audio-toggle-btn" id="audioToggleBtn" aria-label="Toggle Cinema Audio">
+        <span class="audio-waves" aria-hidden="true">
+          <span class="bar bar-1"></span>
+          <span class="bar bar-2"></span>
+          <span class="bar bar-3"></span>
+        </span>
+        <span class="audio-label" id="audioLabel">AUDIO // OFF</span>
       </button>
-      <span class="theme-divider">/</span>
-      <button class="theme-btn active" id="btnCrimson" aria-label="Switch to Crimson Red Mode">
-        <span class="btn-indicator crimson-ind"></span>
-        <span class="btn-label">CRIMSON</span>
-      </button>
-      <span class="theme-divider">/</span>
-      <button class="theme-btn" id="btnPurple" aria-label="Switch to Dark Purple Mode">
-        <span class="btn-indicator purple-ind"></span>
-        <span class="btn-label">PURPLE</span>
-      </button>
+
+      <div class="theme-switcher-wrapper">
+        <button class="theme-btn" id="btnNoir" aria-label="Switch to Noir Mode">
+          <span class="btn-indicator"></span>
+          <span class="btn-label">NOIR</span>
+        </button>
+        <span class="theme-divider">/</span>
+        <button class="theme-btn active" id="btnCrimson" aria-label="Switch to Crimson Red Mode">
+          <span class="btn-indicator crimson-ind"></span>
+          <span class="btn-label">CRIMSON</span>
+        </button>
+        <span class="theme-divider">/</span>
+        <button class="theme-btn" id="btnPurple" aria-label="Switch to Dark Purple Mode">
+          <span class="btn-indicator purple-ind"></span>
+          <span class="btn-label">PURPLE</span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -212,7 +223,7 @@
     </div>
 
     <!-- ====================================================================
-         03. PERSPECTIVES: 3 MINIMALIST PILLARS & SEATED MONOGRAPH
+         03. PERSPECTIVES: 3 MINIMALIST PILLARS & COMPOSURE ARCHIVE
          ==================================================================== -->
     <section class="minimal-perspectives-section" id="perspectives">
       <div class="container">
@@ -284,7 +295,58 @@
     </div>
 
     <!-- ====================================================================
-         05. MINIMAL CONNECT
+         05. CINEMA & MOTION (PRATYUSH YADAV CINEMATIC REEL)
+         ==================================================================== -->
+    <section class="cinematic-reel-section" id="reel">
+      <div class="container">
+        
+        <div class="section-title-line reveal">
+          <span class="section-num">02</span>
+          <h2 class="section-name">Cinema & Motion</h2>
+        </div>
+
+        <div class="reel-master-frame reveal" id="reelVideoFrame">
+          <div class="reel-video-wrapper">
+            <video 
+              id="pratyushReelVideo" 
+              src="assets/pratyush-reel.mp4" 
+              class="reel-video-element" 
+              playsinline 
+              loop 
+              autoplay 
+              muted 
+              preload="auto"
+            ></video>
+            <div class="reel-vignette-overlay"></div>
+            
+            <!-- Video Control Overlays -->
+            <div class="reel-controls-overlay">
+              <button class="reel-action-btn" id="videoPlayPauseBtn" aria-label="Play / Pause Video">
+                <span class="ctrl-icon" id="playPauseIcon">❚❚</span>
+                <span class="ctrl-text" id="playPauseText">PAUSE</span>
+              </button>
+              
+              <button class="reel-action-btn" id="videoSoundBtn" aria-label="Toggle Sound">
+                <span class="ctrl-icon" id="soundIcon">🔇</span>
+                <span class="ctrl-text" id="soundText">UNMUTE</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="reel-caption-bar">
+            <div class="reel-meta-tag">
+              <span class="reel-dot"></span>
+              <span class="reel-title">ACT IV // CINEMATIC MOTION</span>
+            </div>
+            <span class="reel-loc">LUCKNOW, INDIA</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         06. MINIMAL CONNECT
          ==================================================================== -->
     <section class="minimal-connect-section" id="connect">
       <div class="container">

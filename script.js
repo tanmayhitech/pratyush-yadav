@@ -231,6 +231,109 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --------------------------------------------------------------------------
+  // 5.5. Cinema & Motion Reel Video Controller (Smooth Audio Fade-In)
+  // --------------------------------------------------------------------------
+  const reelVideo = document.getElementById('pratyushReelVideo');
+  const videoPlayPauseBtn = document.getElementById('videoPlayPauseBtn');
+  const playPauseIcon = document.getElementById('playPauseIcon');
+  const playPauseText = document.getElementById('playPauseText');
+
+  const videoSoundBtn = document.getElementById('videoSoundBtn');
+  const soundIcon = document.getElementById('soundIcon');
+  const soundText = document.getElementById('soundText');
+
+  const audioToggleBtn = document.getElementById('audioToggleBtn');
+  const audioLabel = document.getElementById('audioLabel');
+  const reelVideoFrame = document.getElementById('reelVideoFrame');
+
+  let isAudioPlaying = false;
+  let audioFadeInterval = null;
+
+  function setAudioState(play) {
+    if (!reelVideo) return;
+    clearInterval(audioFadeInterval);
+
+    if (play) {
+      reelVideo.muted = false;
+      reelVideo.volume = 0;
+      isAudioPlaying = true;
+      
+      // Smooth fade-in volume over 1.2s
+      let currentVol = 0;
+      audioFadeInterval = setInterval(() => {
+        if (currentVol < 0.75) {
+          currentVol += 0.05;
+          reelVideo.volume = Math.min(1, currentVol);
+        } else {
+          clearInterval(audioFadeInterval);
+        }
+      }, 70);
+
+      if (audioToggleBtn) {
+        audioToggleBtn.classList.add('is-playing');
+        if (audioLabel) audioLabel.textContent = 'AUDIO // ON';
+      }
+      if (soundIcon) soundIcon.textContent = '🔊';
+      if (soundText) soundText.textContent = 'MUTE';
+      if (reelVideoFrame) reelVideoFrame.classList.add('is-playing');
+    } else {
+      // Smooth fade-out volume
+      let currentVol = reelVideo.volume;
+      audioFadeInterval = setInterval(() => {
+        if (currentVol > 0.05) {
+          currentVol -= 0.1;
+          reelVideo.volume = Math.max(0, currentVol);
+        } else {
+          reelVideo.muted = true;
+          reelVideo.volume = 0;
+          clearInterval(audioFadeInterval);
+        }
+      }, 50);
+
+      isAudioPlaying = false;
+      if (audioToggleBtn) {
+        audioToggleBtn.classList.remove('is-playing');
+        if (audioLabel) audioLabel.textContent = 'AUDIO // OFF';
+      }
+      if (soundIcon) soundIcon.textContent = '🔇';
+      if (soundText) soundText.textContent = 'UNMUTE';
+    }
+  }
+
+  // Header Audio Toggle
+  audioToggleBtn?.addEventListener('click', () => {
+    setAudioState(!isAudioPlaying);
+  });
+
+  // Reel Video Sound Button
+  videoSoundBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setAudioState(!isAudioPlaying);
+  });
+
+  // Reel Video Play / Pause Button
+  videoPlayPauseBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (!reelVideo) return;
+    if (reelVideo.paused) {
+      reelVideo.play();
+      if (playPauseIcon) playPauseIcon.textContent = '❚❚';
+      if (playPauseText) playPauseText.textContent = 'PAUSE';
+      if (reelVideoFrame) reelVideoFrame.classList.add('is-playing');
+    } else {
+      reelVideo.pause();
+      if (playPauseIcon) playPauseIcon.textContent = '►';
+      if (playPauseText) playPauseText.textContent = 'PLAY';
+      if (reelVideoFrame) reelVideoFrame.classList.remove('is-playing');
+    }
+  });
+
+  // Clicking the video directly toggles play/pause
+  reelVideo?.addEventListener('click', () => {
+    videoPlayPauseBtn?.click();
+  });
+
+  // --------------------------------------------------------------------------
   // 6. Contact Dispatch Modal (Live Endpoint Integration with Anti-Spam & Rate Limit)
   // --------------------------------------------------------------------------
   const contactModal = document.getElementById('contactModal');

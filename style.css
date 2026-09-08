@@ -322,6 +322,87 @@ button {
   color: var(--text-muted);
 }
 
+.header-right-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  pointer-events: auto;
+}
+
+.audio-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  background: rgba(6, 6, 6, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  padding: 0.25rem 0.55rem;
+  min-height: 28px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all var(--speed-fast);
+}
+
+[data-theme="crimson"] .audio-toggle-btn {
+  background: #000000;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="purple"] .audio-toggle-btn {
+  background: #0e0417;
+  border-color: var(--border-subtle);
+}
+
+.audio-toggle-btn:hover {
+  border-color: var(--border-focus);
+  color: var(--text-lead);
+}
+
+.audio-toggle-btn.is-playing {
+  color: var(--text-pure);
+}
+
+.audio-waves {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 10px;
+}
+
+.audio-waves .bar {
+  width: 2px;
+  height: 3px;
+  background-color: var(--text-dim);
+  border-radius: 1px;
+  transition: height var(--speed-fast), background-color var(--speed-fast);
+}
+
+.audio-toggle-btn.is-playing .audio-waves .bar {
+  background-color: var(--crimson-accent);
+}
+
+[data-theme="crimson"] .audio-toggle-btn.is-playing .audio-waves .bar {
+  background-color: #ffffff;
+}
+
+[data-theme="purple"] .audio-toggle-btn.is-playing .audio-waves .bar {
+  background-color: #a855f7;
+}
+
+.audio-toggle-btn.is-playing .bar-1 { animation: soundWave 0.8s ease-in-out infinite alternate; }
+.audio-toggle-btn.is-playing .bar-2 { animation: soundWave 0.6s ease-in-out infinite alternate 0.2s; }
+.audio-toggle-btn.is-playing .bar-3 { animation: soundWave 0.9s ease-in-out infinite alternate 0.4s; }
+
+@keyframes soundWave {
+  0% { height: 2px; }
+  100% { height: 10px; }
+}
+
 .theme-switcher-wrapper {
   display: inline-flex;
   align-items: center;
@@ -1254,7 +1335,146 @@ button {
 }
 
 /* --------------------------------------------------------------------------
-   07. Minimal Connect Section
+   07. Cinema & Motion Reel Section
+   -------------------------------------------------------------------------- */
+.cinematic-reel-section {
+  padding: clamp(4rem, 8vw, 7rem) 0;
+  border-top: 1px solid var(--border-subtle);
+  position: relative;
+  z-index: 3;
+}
+
+.reel-master-frame {
+  position: relative;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 8px;
+  max-width: 860px;
+  margin: 0 auto;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.85);
+  transition: all var(--speed-mid);
+}
+
+[data-theme="crimson"] .reel-master-frame {
+  background-color: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 20px 20px 0px rgba(0, 0, 0, 0.95);
+}
+
+[data-theme="purple"] .reel-master-frame {
+  background-color: #0c0314;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  box-shadow: 20px 20px 0px rgba(0, 0, 0, 0.9), 0 0 35px rgba(168, 85, 247, 0.2);
+}
+
+.reel-video-wrapper {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  max-height: 520px;
+  background-color: #000000;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reel-video-element {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%) contrast(115%) brightness(95%);
+  transition: transform 0.8s var(--ease-film), filter 0.8s var(--ease-film);
+  opacity: 0.95;
+}
+
+.reel-master-frame:hover .reel-video-element,
+.reel-master-frame.is-playing .reel-video-element {
+  transform: scale(1.02);
+  filter: grayscale(0%) contrast(106%) brightness(102%) saturate(115%) !important;
+}
+
+.reel-vignette-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at center, transparent 60%, rgba(0, 0, 0, 0.75) 100%);
+  transition: opacity var(--speed-mid);
+}
+
+.reel-controls-overlay {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: auto;
+  z-index: 10;
+}
+
+.reel-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  padding: 0.45rem 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all var(--speed-fast);
+}
+
+.reel-action-btn:hover {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.reel-caption-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0.35rem 0.2rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
+}
+
+.reel-meta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reel-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--crimson-accent);
+  box-shadow: 0 0 8px var(--crimson-glow);
+}
+
+.reel-title {
+  color: var(--text-lead);
+  font-weight: 500;
+}
+
+.reel-loc {
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   08. Minimal Connect Section
    -------------------------------------------------------------------------- */
 .minimal-connect-section {
   padding: clamp(4rem, 8vw, 6.5rem) 0 clamp(3rem, 6vw, 5rem);
