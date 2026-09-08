@@ -166,13 +166,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { passive: true });
 
   // --------------------------------------------------------------------------
-  // 4. 3D Micro-Parallax Tilt & Mobile Touch Interaction on Portrait
-  // --------------------------------------------------------------------------
   // 4. Portrait 3D Parallax & Mobile Gyroscope Engine
   // --------------------------------------------------------------------------
   const portraitArtwork = document.getElementById('portraitArtwork');
   const portraitGlareSheen = document.getElementById('portraitGlareSheen');
-  const mainPortraitImg = document.getElementById('mainPortraitImg');
   const lapelBadges = document.querySelectorAll('.godfather-rose-badge, .purple-amethyst-badge');
 
   if (portraitArtwork) {
