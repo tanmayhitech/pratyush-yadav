@@ -677,8 +677,11 @@ button {
   cursor: pointer;
   outline: none;
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.85);
-  transition: transform 0.25s ease-out, box-shadow var(--speed-mid), border-color var(--speed-mid);
+  transition: box-shadow var(--speed-mid), border-color var(--speed-mid);
   will-change: transform;
 }
 
