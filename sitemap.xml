@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+ï»¿<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
@@ -9,19 +9,19 @@
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://www.pratyushyadav.com/assets/pratyush-suit-study.jpeg</image:loc>
-      <image:title>Pratyush Yadav — The Study (Lucknow)</image:title>
+      <image:title>Pratyush Yadav // The Study</image:title>
       <image:caption>Pratyush Yadav official monograph portrait in Lucknow, India</image:caption>
       <image:geo_location>Lucknow, Uttar Pradesh, India</image:geo_location>
     </image:image>
     <image:image>
       <image:loc>https://www.pratyushyadav.com/assets/bauwabhaiy.jpeg</image:loc>
-      <image:title>Pratyush Yadav — Close-up Portrait</image:title>
+      <image:title>Pratyush Yadav // Close-up Portrait</image:title>
       <image:caption>Pratyush Yadav close-up monograph portrait</image:caption>
       <image:geo_location>Lucknow, Uttar Pradesh, India</image:geo_location>
     </image:image>
     <image:image>
       <image:loc>https://www.pratyushyadav.com/assets/pratyush-suit-seated.jpeg</image:loc>
-      <image:title>Pratyush Yadav — Composure &amp; Presence</image:title>
+      <image:title>Pratyush Yadav // Composure and Presence</image:title>
       <image:caption>Pratyush Yadav editorial seated suit study</image:caption>
       <image:geo_location>Lucknow, Uttar Pradesh, India</image:geo_location>
     </image:image>
