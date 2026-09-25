@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
+Sitemap: https://www.pratyushyadav.com/sitemap.xml
 Sitemap: https://pratyushyadav.com/sitemap.xml
